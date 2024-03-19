@@ -41,7 +41,7 @@ def handle_message(event):
     instruction_message = "以下的回應請使用繁體中文。"
 
     
-  response = openai.ChatCompletion.create(
+      response = openai.ChatCompletion.create(
         messages=[
             {"role": "system", "content": f"{instruction_message}, {impersonated_role}"},
             {"role": "user", "content": text1}
