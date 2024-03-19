@@ -14,6 +14,7 @@ with open('persona.json') as f:
 impersonated_role = personas['dream_interpreter']['content']
 
 app = Flask(__name__)
+
 openai.api_key = os.getenv('OPENAI_API_KEY')
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler1 = WebhookHandler(os.getenv('CHANNEL_SECRET'))
@@ -35,13 +36,12 @@ def callback():
 def handle_message(event):
     global message_counter
     message_counter += 1  # Increment the message counter
-    text1 = event.message.text
+    text1=event.message.text
 
     # Constructing a message that includes a language instruction
-    instruction_message = "以下的回應請使用繁體中文。"
-
+    instruction_message = "以下的回應請使用繁體中文。" 
     
-      response = openai.ChatCompletion.create(
+    response = openai.ChatCompletion.create(
         messages=[
             {"role": "system", "content": f"{instruction_message}, {impersonated_role}"},
             {"role": "user", "content": text1}
@@ -55,7 +55,7 @@ def handle_message(event):
         ret = '發生錯誤！'
     
     # Append the counter to the response
-    ret_with_count = f"{ret}\n\n訊息計數: {message_counter}"  # "Message Count" in Traditional Chinese
+    ret_with_count = f"{ret}\n\nMessage Count: {message_counter}"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_with_count))
 
 if __name__ == '__main__':
